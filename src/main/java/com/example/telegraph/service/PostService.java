@@ -8,6 +8,7 @@ import com.example.telegraph.repository.PostRepository;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,5 +36,7 @@ public class PostService {
         return postRepository.findPostEntitiesById(id);
     }
 
-    public List<PostEntity>searchUserPostsById(String name,String description)
+    public List<PostEntity>searchUserPostsById(String name,String description){
+        return postRepository.findPostEntitiesByNameContainsIgnoreCaseOrTitleContainsIgnoreCase(name,description, Sort.by(Sort.Order.asc("createdDate")));
+    }
 }

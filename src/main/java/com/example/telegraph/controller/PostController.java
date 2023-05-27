@@ -33,4 +33,12 @@ public class PostController {
     ){
         return postService.getUserPostsById(postId);
     }
+
+    @GetMapping("/searchPostByNameOrTitleOrAsc")
+    private List<PostEntity>searchPostByNameOrTitleOrAsc(
+        @RequestParam String name,
+        @RequestParam String title
+    ){
+        return postService.searchUserPostsById(name,title);
+    }
 }
