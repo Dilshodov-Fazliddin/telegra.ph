@@ -32,11 +32,11 @@ public class PostService {
         return postRepository.save(map);
     }
 
-    public List<PostEntity> getUserPostsById(UUID id){
-        return postRepository.findPostEntitiesById(id);
+    public List<PostEntity>searchUserPostsById(String name,String title){
+        return postRepository.findPostEntitiesByNameContainsIgnoreCaseOrTitleContainsIgnoreCase(name, title, Sort.by(Sort.Order.asc("createdDate")));
+    }
+    public List<PostEntity>getUserPost(UUID id){
+        return postRepository.findPostEntitiesByAuthor_Id(id,Sort.by(Sort.Order.asc("name")));
     }
 
-    public List<PostEntity>searchUserPostsById(String name,String description){
-        return postRepository.findPostEntitiesByNameContainsIgnoreCaseOrTitleContainsIgnoreCase(name,description, Sort.by(Sort.Order.asc("createdDate")));
-    }
 }

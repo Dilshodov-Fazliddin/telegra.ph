@@ -16,10 +16,9 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class PostController {
-    private final UserService userService;
     private final PostService postService;
 
-    @PostMapping("/addTag")
+    @PostMapping("/addPost")
     private ResponseEntity<PostEntity> addPost(
         @RequestBody PostDto postDto,
         @RequestParam UUID userId
@@ -27,18 +26,22 @@ public class PostController {
         return  ResponseEntity.ok(postService.add(postDto,userId));
     }
 
-    @GetMapping("/getUserPostById")
-    private List<PostEntity> getUserPost(
-        @RequestParam UUID postId
-    ){
-        return postService.getUserPostsById(postId);
-    }
 
-    @GetMapping("/searchPostByNameOrTitleOrAsc")
+    @GetMapping("/searchPostByNameAndTitleOrAsc")
     private List<PostEntity>searchPostByNameOrTitleOrAsc(
         @RequestParam String name,
         @RequestParam String title
     ){
         return postService.searchUserPostsById(name,title);
     }
+
+
+    @GetMapping("/searchUserPostsByIdSortAsc")
+    private List<PostEntity>getUserPostById(
+            @RequestParam UUID id
+    ){
+        return postService.getUserPost(id);
+    }
+
+
 }
