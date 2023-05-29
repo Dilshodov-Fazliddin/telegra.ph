@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, UUID> {
-    List<PostEntity>findPostEntitiesByNameContainsIgnoreCaseOrTitleContainsIgnoreCase(String name, String description, Sort sort);
+    List<PostEntity>findPostEntitiesByNameOrTitle(String name, String description, Sort sort);
 
 
     List<PostEntity>findPostEntitiesByAuthor_Id(UUID id,Sort sort);

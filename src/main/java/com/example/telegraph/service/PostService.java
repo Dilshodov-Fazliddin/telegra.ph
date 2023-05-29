@@ -33,7 +33,7 @@ public class PostService {
     }
 
     public List<PostEntity>searchUserPostsById(String name,String title){
-        return postRepository.findPostEntitiesByNameContainsIgnoreCaseOrTitleContainsIgnoreCase(name, title, Sort.by(Sort.Order.asc("createdDate")));
+        return postRepository.findPostEntitiesByNameOrTitle(name, title, Sort.by(Sort.Order.asc("createdDate")));
     }
     public List<PostEntity>getUserPost(UUID id){
         return postRepository.findPostEntitiesByAuthor_Id(id,Sort.by(Sort.Order.asc("name")));

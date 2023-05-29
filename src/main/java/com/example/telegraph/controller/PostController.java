@@ -2,10 +2,7 @@ package com.example.telegraph.controller;
 
 import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
-import com.example.telegraph.entity.UserEntity;
-import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.service.PostService;
-import com.example.telegraph.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +26,8 @@ public class PostController {
 
     @GetMapping("/searchPostByNameAndTitleOrAsc")
     private List<PostEntity>searchPostByNameOrTitleOrAsc(
-        @RequestParam String name,
-        @RequestParam String title
+        @RequestParam(required = false,defaultValue = "",name ="name") String name,
+        @RequestParam(required = false,defaultValue = "",name = "title") String title
     ){
         return postService.searchUserPostsById(name,title);
     }
@@ -38,9 +35,9 @@ public class PostController {
 
     @GetMapping("/searchUserPostsByIdSortAsc")
     private List<PostEntity>getUserPostById(
-            @RequestParam UUID id
+            @RequestParam UUID post_id
     ){
-        return postService.getUserPost(id);
+        return postService.getUserPost(post_id);
     }
 
 
