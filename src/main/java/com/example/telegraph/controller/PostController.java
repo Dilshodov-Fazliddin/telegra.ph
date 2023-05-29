@@ -45,8 +45,9 @@ public class PostController {
 
 
     @GetMapping("/getByUrlAndEditByUrl/{url}")
-    private List<PostEntity> edit(
+    private List<PostEntity> searchByUrl(
             @PathVariable String url
+
     ){
         return postService.updateAndShow(url);
     }
