@@ -2,6 +2,7 @@ package com.example.telegraph.controller;
 
 import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
+import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,28 +26,26 @@ public class PostController {
 
 
     @GetMapping("/searchPostByNameAndTitleOrAsc")
-    private List<PostEntity>searchPostByNameOrTitleOrAsc(
+    private ResponseEntity<Object>searchPostByNameOrTitleOrAsc(
         @RequestParam(required = false,defaultValue = "",name ="name") String name,
         @RequestParam(required = false,defaultValue = "",name = "title") String title
     ){
-        return postService.searchUserPostsById(name,title);
+        return ResponseEntity.ok(postService.searchUserPostsById(name,title));
     }
 
 
     @GetMapping("/searchUserPostsByIdSortAsc")
-    private List<PostEntity>getUserPostById(
-            @RequestParam UUID post_id
+    private ResponseEntity<Object>getUserPostById(
+            @RequestParam(defaultValue = "") UUID post_id
     ){
-        return postService.getUserPost(post_id);
+        return ResponseEntity.ok(postService.getUserPost(post_id));
     }
 
 
     @GetMapping("/getByUrlAndEditByUrl/{url}")
-    private List<PostEntity> searchByUrl(
+    private ResponseEntity<Object> searchByUrl(
             @PathVariable String url
-
-    ){
-        return postService.updateAndShow(url);
+    ) {
+        return ResponseEntity.ok(postService.updateAndShow(url));
     }
-
 }

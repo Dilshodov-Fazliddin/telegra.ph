@@ -33,13 +33,29 @@ public class PostService {
     }
 
     public List<PostEntity>searchUserPostsById(String name,String title){
-        return postRepository.findPostEntitiesByNameOrTitle(name, title, Sort.by(Sort.Order.asc("createdDate")));
+            try {
+                if (name.isBlank() && title.isBlank()){
+                    throw new MyCustomException("Name or title is BLank");
+                }
+                return postRepository.findPostEntitiesByNameOrTitle(name, title, Sort.by(Sort.Order.asc("createdDate")));
+            }catch (Exception e){
+                throw new MyCustomException("Not found");
+            }
     }
-    public List<PostEntity>getUserPost(UUID id){
-        return postRepository.findPostEntitiesByAuthor_Id(id,Sort.by(Sort.Order.asc("name")));
+    public List<PostEntity>getUserPost(UUID id) {
+        try {
+            return postRepository.findPostEntitiesByAuthor_Id(id, Sort.by(Sort.Order.asc("name")));
+        } catch (Exception e) {
+            throw new MyCustomException("Not found");
+        }
+
     }
     public List<PostEntity> updateAndShow(String url){
-         return postRepository.findPostEntitiesByUrl(url);
+        try {
+            return postRepository.findPostEntitiesByUrl(url);
+        }catch (Exception e){
+            throw new MyCustomException("Not found");
+        }
     }
 
 }
