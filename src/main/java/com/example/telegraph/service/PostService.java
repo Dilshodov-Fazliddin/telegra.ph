@@ -22,9 +22,6 @@ public class PostService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     public PostEntity add(PostDto postDto, UUID id){
-        if (postDto.getName().isBlank() && postDto.getContent().isBlank()){
-            throw new MyCustomException("post name or content is Blank");
-        }
         PostEntity map = modelMapper.map(postDto, PostEntity.class);
         UserEntity user = userRepository.findById(id).get();
         map.setAuthor(user);
@@ -34,9 +31,7 @@ public class PostService {
 
     public List<PostEntity>searchUserPostsById(String name,String title){
             try {
-                if (name.isBlank() && title.isBlank()){
-                    throw new MyCustomException("Name or title is BLank");
-                }
+
                 return postRepository.findPostEntitiesByNameOrTitle(name, title, Sort.by(Sort.Order.asc("createdDate")));
             }catch (Exception e){
                 throw new MyCustomException("Not found");
