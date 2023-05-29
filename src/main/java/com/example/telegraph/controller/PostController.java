@@ -44,4 +44,11 @@ public class PostController {
     }
 
 
+    @GetMapping("/getByUrlAndEditByUrl/{url}")
+    private List<PostEntity> edit(
+            @PathVariable String url
+    ){
+        return postService.updateAndShow(url);
+    }
+
 }

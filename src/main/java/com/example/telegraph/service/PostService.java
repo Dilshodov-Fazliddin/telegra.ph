@@ -38,5 +38,8 @@ public class PostService {
     public List<PostEntity>getUserPost(UUID id){
         return postRepository.findPostEntitiesByAuthor_Id(id,Sort.by(Sort.Order.asc("name")));
     }
+    public List<PostEntity> updateAndShow(String url){
+         return postRepository.findPostEntitiesByUrl(url);
+    }
 
 }

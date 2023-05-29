@@ -14,4 +14,6 @@ public interface PostRepository extends JpaRepository<PostEntity, UUID> {
 
 
     List<PostEntity>findPostEntitiesByAuthor_Id(UUID id,Sort sort);
+
+    List<PostEntity>findPostEntitiesByUrl(String url);
 }
