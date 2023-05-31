@@ -52,5 +52,4 @@ public class PostService {
             throw new MyCustomException("Not found");
         }
     }
-
 }

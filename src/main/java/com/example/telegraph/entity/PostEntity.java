@@ -17,6 +17,7 @@ public class PostEntity extends BaseEntity {
     private String content;
     @Column(unique = true)
     private String url;
+
     @ManyToOne
     private UserEntity author;
 }

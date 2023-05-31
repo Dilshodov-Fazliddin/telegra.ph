@@ -4,8 +4,10 @@ import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
 import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +20,9 @@ public class PostController {
 
     @PostMapping("/addPost")
     private ResponseEntity<PostEntity> addPost(
-        @RequestBody PostDto postDto,
-        @RequestParam UUID userId
+            @Valid @RequestBody PostDto postDto,
+            @RequestParam UUID userId,
+        BindingResult bindingResult
     ){
         return  ResponseEntity.ok(postService.add(postDto,userId));
     }

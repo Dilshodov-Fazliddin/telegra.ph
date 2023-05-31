@@ -2,6 +2,7 @@ package com.example.telegraph.service;
 
 import com.example.telegraph.dto.UserDto;
 import com.example.telegraph.entity.UserEntity;
+import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -17,20 +18,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public int add(UserDto userDto){
-        System.out.println(userDto);
+    public UserEntity add(UserDto userDto) {
+        if (userDto.getName().isBlank() || userDto.getUsername().isBlank() || userDto.getPassword().isBlank()) {
+            throw new MyCustomException("User properties is blank");
+        }
         try {
             UserEntity user = modelMapper.map(userDto, UserEntity.class);
-            UserEntity save = userRepository.save(user);
-            System.out.println(save);
-        }catch (DataIntegrityViolationException e){
-            return 500;
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new MyCustomException("Username already exist");
         }
-        return 200;
     }
 
 
-    public UserEntity signIn(String username, String password){
+    public UserEntity signIn(String username, String password) {
+        if (username.isBlank() || password.isBlank()) {
+            throw new MyCustomException("user name or password is blank");
+        }
         return userRepository.getByUsernameAndPassword(username, password);
     }
 }
