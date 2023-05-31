@@ -5,11 +5,7 @@ import com.example.telegraph.entity.UserEntity;
 import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
