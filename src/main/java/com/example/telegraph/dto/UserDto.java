@@ -1,6 +1,7 @@
 package com.example.telegraph.dto;
 
 import com.example.telegraph.entity.PostEntity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UserDto {
+
     private String name;
     private String username;
     private String password;

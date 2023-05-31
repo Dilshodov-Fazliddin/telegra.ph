@@ -2,12 +2,14 @@ package com.example.telegraph.controller;
 
 import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
-import com.example.telegraph.exception.MyCustomException;
+import com.example.telegraph.exception.PostNotCreatedException;
 import com.example.telegraph.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +22,9 @@ public class PostController {
 
     @PostMapping("/addPost")
     private ResponseEntity<PostEntity> addPost(
-            @Valid @RequestBody PostDto postDto,
-            @RequestParam UUID userId,
-        BindingResult bindingResult
+           @RequestBody PostDto postDto,
+            @RequestParam UUID userId
+
     ){
         return  ResponseEntity.ok(postService.add(postDto,userId));
     }
@@ -32,7 +34,9 @@ public class PostController {
     private ResponseEntity<Object>searchPostByNameOrTitleOrAsc(
         @RequestParam(required = false,defaultValue = "",name ="name") String name,
         @RequestParam(required = false,defaultValue = "",name = "title") String title
+
     ){
+
         return ResponseEntity.ok(postService.searchUserPostsById(name,title));
     }
 
@@ -49,6 +53,6 @@ public class PostController {
     private ResponseEntity<Object> searchByUrl(
             @PathVariable String url
     ) {
-        return ResponseEntity.ok(postService.updateAndShow(url));
+        return new ResponseEntity<> (postService.updateAndShow(url), HttpStatus.OK);
     }
 }
