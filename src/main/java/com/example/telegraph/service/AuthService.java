@@ -1,5 +1,6 @@
 package com.example.telegraph.service;
 
+import com.example.telegraph.exception.DataNotFoundException;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        return userRepository.findUserEntityByUsername(username).
+                orElseThrow(()-> new DataNotFoundException("user not found exception"));
     }
 }

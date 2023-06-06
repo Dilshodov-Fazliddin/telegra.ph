@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class JwtService {
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime()+accessTokenExpiry))
-                .addClaims(Map.of("roles",getRoles(user.getAuthorities())))
+                .addClaims(Map.of("userRoles",getRoles(user.getAuthorities())))
                 .compact();
     }
 

@@ -22,6 +22,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Column(nullable = false,unique = true)
     private String username;
     private String password;
+    @Enumerated(EnumType.STRING)
     private List<Role>userRoles;
     private Boolean isActive;
 

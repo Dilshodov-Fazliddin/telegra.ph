@@ -10,8 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class UserDto {
-    private String name;
+public class LoginDto {
     private String username;
     private String password;
 }
