@@ -2,17 +2,12 @@ package com.example.telegraph.controller;
 
 import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
-import com.example.telegraph.exception.PostNotCreatedException;
 import com.example.telegraph.service.PostService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
