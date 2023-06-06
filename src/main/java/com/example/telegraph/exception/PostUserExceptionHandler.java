@@ -1,4 +1,4 @@
-package com.example.telegraph.config;
+package com.example.telegraph.exception;
 
 import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.exception.PostNotCreatedException;

@@ -6,6 +6,7 @@ import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,13 +14,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
+    private final PasswordEncoder passwordEncoder;
     public UserEntity add(UserDto userDto) {
         if (userDto.getName().isBlank() || userDto.getUsername().isBlank() || userDto.getPassword().isBlank()) {
             throw new MyCustomException("User properties is blank");
         }
         try {
             UserEntity user = modelMapper.map(userDto, UserEntity.class);
+
             return userRepository.save(user);
         } catch (Exception e) {
             throw new MyCustomException("Username already exist");
@@ -33,4 +35,6 @@ public class UserService {
         }
         return userRepository.getByUsernameAndPassword(username, password);
     }
+
+
 }
