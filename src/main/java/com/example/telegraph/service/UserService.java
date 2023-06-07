@@ -35,12 +35,10 @@ public class UserService {
                 .orElseThrow(
                 () -> new DataNotFoundException("User not found")
         );
-        if (user.getIsActive().equals(true)) {
             if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
                 String accessToken = jwtService.generateAccessToken(user);
                 return JwtResponse.builder().accessToken(accessToken).build();
             }
-        }
         throw new DataNotFoundException("User Not found or user is blocked");
     }
 

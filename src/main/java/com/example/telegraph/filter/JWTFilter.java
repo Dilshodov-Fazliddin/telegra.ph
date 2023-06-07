@@ -18,17 +18,18 @@ public class JWTFilter extends OncePerRequestFilter {
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
         String token=request.getHeader("authorization");
-
-        if (token==null || token.startsWith("Bearer ")){
+        if (token==null || !token.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
             return;
         }
 
         token=token.substring(7);
-
         Jws<Claims>claimsJws=jwtService.extractToken(token);
 
         authenticationService.authentication(claimsJws.getBody(),request);

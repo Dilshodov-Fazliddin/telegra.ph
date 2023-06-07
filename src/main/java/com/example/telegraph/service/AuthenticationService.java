@@ -17,7 +17,6 @@ public class AuthenticationService {
     public void authentication(Claims claims, HttpServletRequest httpServletRequest) throws JsonProcessingException {
         List<String>roles= (List<String>) claims.get("userRoles");
         String username = claims.getSubject();
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 username,
                 null,
@@ -38,4 +37,5 @@ public class AuthenticationService {
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }
+
 }
