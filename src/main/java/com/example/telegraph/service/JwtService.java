@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,7 @@ public class JwtService {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime()+accessTokenExpiry))
                 .addClaims(Map.of("userRoles",getRoles(user.getAuthorities())))
+
                 .compact();
     }
 

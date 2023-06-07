@@ -23,22 +23,25 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     public UserEntity saveUser(UserDto userDto,  List<Role> roles) {
-        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+            UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userEntity.setUserRoles(roles);
-
+        userEntity.setIsActive(true);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         return userRepository.save(userEntity);
     }
 
     public JwtResponse signIn(LoginDto loginDto){
-        UserEntity user=userRepository.findUserEntityByUsername(loginDto.getUsername()).orElseThrow(
+        UserEntity user=userRepository.findUserEntityByUsername(loginDto.getUsername())
+                .orElseThrow(
                 () -> new DataNotFoundException("User not found")
         );
-        if (passwordEncoder.matches(loginDto.getPassword(),user.getPassword())){
-            String accessToken=jwtService.generateAccessToken(user);
-            return JwtResponse.builder().accessToken(accessToken).build();
+        if (user.getIsActive().equals(true)) {
+            if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+                String accessToken = jwtService.generateAccessToken(user);
+                return JwtResponse.builder().accessToken(accessToken).build();
+            }
         }
-        throw new DataNotFoundException("User Not found");
+        throw new DataNotFoundException("User Not found or user is blocked");
     }
 
 

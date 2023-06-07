@@ -17,7 +17,6 @@ import java.util.List;
 @Setter
 @Builder
 public class UserEntity extends BaseEntity implements UserDetails {
-    @Column(nullable = false)
     private String name;
     @Column(nullable = false,unique = true)
     private String username;
@@ -31,8 +30,8 @@ public class UserEntity extends BaseEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = "ROLE_";
         List<SimpleGrantedAuthority>authorities=new ArrayList<>();
-        for (Role userrole:userRoles){
-            authorities.add(new SimpleGrantedAuthority(role+userrole.name()));
+        for (Role roles:userRoles){
+            authorities.add(new SimpleGrantedAuthority(role+roles.name()));
         }
 
         return authorities;

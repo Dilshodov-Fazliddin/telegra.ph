@@ -38,7 +38,7 @@ public class PostService {
 
     public List<PostEntity>searchUserPostsById(String name,String title){
             if (name.isBlank() && title.isBlank()){
-                throw new MyCustomException("name or title is blank");
+                throw new MyCustomException("name and title is blank");
             }
             try {
                 return postRepository.findPostEntitiesByNameOrTitle(name, title, Sort.by(Sort.Order.asc("createdDate")));

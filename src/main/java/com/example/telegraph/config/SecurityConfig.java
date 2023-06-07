@@ -32,9 +32,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
-                .authorizeHttpRequests((authorize)->{
+                .authorizeHttpRequests((authorize)-> {
                     authorize
-                            .requestMatchers("/api/v1/auth/**").permitAll();
+                            .requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated();
                 })
                 .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JWTFilter(authenticationService,jwtService),
