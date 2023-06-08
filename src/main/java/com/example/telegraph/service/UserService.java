@@ -44,13 +44,15 @@ public class UserService {
 
 
     public Boolean blockUser(UUID userId){
-        UserEntity user =userRepository.getUserEntityById(userId).orElseThrow(()->new DataNotFoundException("user not found"));
+        UserEntity user =userRepository.findById(userId)
+                .orElseThrow(()->new DataNotFoundException("user not found"));
         user.setIsActive(false);
         return true;
     }
 
     public Boolean unblockUser(UUID userId){
-        UserEntity user =userRepository.getUserEntityById(userId).orElseThrow(()->new DataNotFoundException("user not found"));
+        UserEntity user =userRepository.findById(userId).
+                orElseThrow(()->new DataNotFoundException("user not found"));
         user.setIsActive(true);
         return true;
     }

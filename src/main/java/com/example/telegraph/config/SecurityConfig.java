@@ -34,7 +34,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests((authorize)-> {
                     authorize
-                            .requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated();
+                            .requestMatchers("/api/v1/auth/**").permitAll()
+                            .requestMatchers("/api/v1/user/**","/api/v1/post/delete/{id}").hasRole("ADMIN")
+                            .anyRequest().authenticated();
                 })
                 .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JWTFilter(authenticationService,jwtService),

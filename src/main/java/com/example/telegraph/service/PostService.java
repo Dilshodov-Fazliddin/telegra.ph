@@ -3,12 +3,14 @@ package com.example.telegraph.service;
 import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
 import com.example.telegraph.entity.UserEntity;
+import com.example.telegraph.exception.DataNotFoundException;
 import com.example.telegraph.exception.MyCustomException;
 import com.example.telegraph.repository.PostRepository;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -63,5 +65,9 @@ public class PostService {
         }catch (Exception e){
             throw new MyCustomException("Not found");
         }
+    }
+
+    public void deletePostById(UUID id){
+       userRepository.findById(id).orElseThrow(()->new DataNotFoundException("post entity not found please try again"));
     }
 }
