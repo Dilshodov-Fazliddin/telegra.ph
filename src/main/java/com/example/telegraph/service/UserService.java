@@ -8,11 +8,14 @@ import com.example.telegraph.entity.UserEntity;
 import com.example.telegraph.entity.enums.UserStatus;
 import com.example.telegraph.exception.AuthFailedException;
 import com.example.telegraph.exception.DataNotFoundException;
+import com.example.telegraph.exception.RequestValidationException;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +27,11 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    public UserEntity saveUser(UserDto userDto,  List<Role> roles) {
+    public UserEntity saveUser(UserDto userDto, List<Role> roles, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            throw  new RequestValidationException(errors);
+        }
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userEntity.setUserRoles(roles);
         userEntity.setHasBlocked(UserStatus.ACTIVE);
@@ -33,6 +40,7 @@ public class UserService {
     }
 
     public JwtResponse signIn(LoginDto loginDto){
+
         UserEntity user=userRepository.findUserEntityByUsername(loginDto.getUsername())
                 .orElseThrow(
                 () -> new DataNotFoundException("User not found")

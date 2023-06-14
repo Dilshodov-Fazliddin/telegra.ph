@@ -3,9 +3,11 @@ package com.example.telegraph.controller;
 import com.example.telegraph.dto.PostDto;
 import com.example.telegraph.entity.PostEntity;
 import com.example.telegraph.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -18,47 +20,51 @@ public class PostController {
 
     @PostMapping("/addPost")
     private ResponseEntity<PostEntity> addPost(
-           @RequestBody PostDto postDto,
-            @RequestParam UUID userId
+           @Valid @RequestBody PostDto postDto,
+           @Valid @RequestParam UUID userId,
+           BindingResult bindingResult
 
     ){
-        return  ResponseEntity.ok(postService.add(postDto,userId));
+        return  ResponseEntity.ok(postService.add(postDto,userId,bindingResult));
     }
 
 
     @GetMapping("/searchPostByNameAndTitleOrAsc")
     private ResponseEntity<Object>searchPostByNameOrTitleOrAsc(
-        @RequestParam(required = false,defaultValue = "",name ="name") String name,
-        @RequestParam(required = false,defaultValue = "",name = "title") String title
+       @Valid @RequestParam(required = false,defaultValue = "",name ="name") String name,
+       @Valid @RequestParam(required = false,defaultValue = "",name = "title") String title,
+        BindingResult bindingResult
 
     ){
 
-        return ResponseEntity.ok(postService.searchUserPostsById(name,title));
+        return ResponseEntity.ok(postService.searchUserPostsById(name,title,bindingResult));
     }
 
 
     @GetMapping("/searchUserPostsByIdSortAsc")
     private ResponseEntity<Object>getUserPostById(
-            @RequestParam(defaultValue = "") UUID post_id
+            @Valid @RequestParam(defaultValue = "") UUID post_id,
+            BindingResult bindingResult
     ){
-        return ResponseEntity.ok(postService.getUserPost(post_id));
+        return ResponseEntity.ok(postService.getUserPost(post_id,bindingResult));
     }
 
 
     @GetMapping("/getByUrlAndEditByUrl/{url}")
     private ResponseEntity<Object> searchByUrl(
-            @PathVariable String url
+            @Valid @PathVariable String url,
+            BindingResult bindingResult
     ) {
-        return new ResponseEntity<> (postService.updateAndShow(url), HttpStatus.OK);
+        return new ResponseEntity<> (postService.updateAndShow(url,bindingResult), HttpStatus.OK);
     }
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deletePost(
-            @PathVariable UUID id
+    public ResponseEntity<Object> deletePost(
+          @Valid @PathVariable UUID id
     ){
         postService.deletePostById(id);
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.ok().build();
     }
 
 }

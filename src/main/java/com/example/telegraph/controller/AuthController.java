@@ -7,8 +7,10 @@ import com.example.telegraph.dto.response.JwtResponse;
 import com.example.telegraph.entity.enums.Role;
 import com.example.telegraph.entity.UserEntity;
 import com.example.telegraph.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +23,14 @@ public class AuthController {
 
 
     @PostMapping("/sign-up")
-    private ResponseEntity<UserEntity>SignUp(@RequestBody UserDto userDto){
-        return ResponseEntity.ok(userService.saveUser(userDto, List.of(Role.USER)));
+    private ResponseEntity<UserEntity>SignUp(@Valid @RequestBody UserDto userDto, BindingResult bindingResult){
+        return ResponseEntity.ok(userService.saveUser(userDto, List.of(Role.USER),bindingResult));
     }
 
     
     @GetMapping("/sign-in")
     private ResponseEntity<JwtResponse>login(
-            @RequestBody LoginDto loginDto
+           @Valid @RequestBody LoginDto loginDto
             ){
         return ResponseEntity.ok(userService.signIn(loginDto));
     }
