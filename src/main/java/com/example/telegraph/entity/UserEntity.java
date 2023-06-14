@@ -1,6 +1,13 @@
 package com.example.telegraph.entity;
 
-import jakarta.persistence.*;
+import com.example.telegraph.entity.enums.Role;
+import com.example.telegraph.entity.enums.UserStatus;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,12 +25,15 @@ import java.util.List;
 @Builder
 public class UserEntity extends BaseEntity implements UserDetails {
     private String name;
-    @Column(nullable = false,unique = true)
+
+    @Column(unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
     private List<Role>userRoles;
-    private Boolean isActive;
+    @Enumerated(EnumType.STRING)
+    private UserStatus hasBlocked;
 
 
     @Override

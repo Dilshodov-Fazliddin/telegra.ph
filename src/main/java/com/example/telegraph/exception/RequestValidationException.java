@@ -4,10 +4,10 @@ import org.springframework.validation.ObjectError;
 
 import java.util.List;
 
-public class PostNotCreatedException extends RuntimeException{
+public class RequestValidationException extends RuntimeException{
     private String message;
 
-    public PostNotCreatedException(List<ObjectError>errors){
+    public RequestValidationException(List<ObjectError>errors){
         StringBuilder errorMessage=new StringBuilder();
 
         for (ObjectError error:errors){

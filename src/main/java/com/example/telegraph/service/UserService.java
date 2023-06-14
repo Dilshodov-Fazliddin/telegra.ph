@@ -3,8 +3,10 @@ package com.example.telegraph.service;
 import com.example.telegraph.dto.LoginDto;
 import com.example.telegraph.dto.UserDto;
 import com.example.telegraph.dto.response.JwtResponse;
-import com.example.telegraph.entity.Role;
+import com.example.telegraph.entity.enums.Role;
 import com.example.telegraph.entity.UserEntity;
+import com.example.telegraph.entity.enums.UserStatus;
+import com.example.telegraph.exception.AuthFailedException;
 import com.example.telegraph.exception.DataNotFoundException;
 import com.example.telegraph.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     public UserEntity saveUser(UserDto userDto,  List<Role> roles) {
-            UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userEntity.setUserRoles(roles);
-        userEntity.setIsActive(true);
+        userEntity.setHasBlocked(UserStatus.ACTIVE);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         return userRepository.save(userEntity);
     }
@@ -39,21 +41,23 @@ public class UserService {
                 String accessToken = jwtService.generateAccessToken(user);
                 return JwtResponse.builder().accessToken(accessToken).build();
             }
-        throw new DataNotFoundException("User Not found or user is blocked");
+        throw new AuthFailedException("User Not found or user is blocked");
     }
 
 
     public Boolean blockUser(UUID userId){
         UserEntity user =userRepository.findById(userId)
                 .orElseThrow(()->new DataNotFoundException("user not found"));
-        user.setIsActive(false);
+        user.setHasBlocked(UserStatus.BLOCKED);
+        userRepository.save(user);
         return true;
     }
 
     public Boolean unblockUser(UUID userId){
         UserEntity user =userRepository.findById(userId).
                 orElseThrow(()->new DataNotFoundException("user not found"));
-        user.setIsActive(true);
+        user.setHasBlocked(UserStatus.ACTIVE);
+        userRepository.save(user);
         return true;
     }
 
