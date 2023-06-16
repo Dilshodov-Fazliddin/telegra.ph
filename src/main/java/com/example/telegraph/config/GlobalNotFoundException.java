@@ -6,8 +6,9 @@ import com.example.telegraph.exception.NotEnoughCreditsException;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
+@ControllerAdvice
 public class GlobalNotFoundException {
     @ExceptionHandler(value = {DataNotFoundException.class})
     public ResponseEntity<String>dataNotFoundException(DataNotFoundException e){
