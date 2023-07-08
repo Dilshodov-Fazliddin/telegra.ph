@@ -32,30 +32,27 @@ public class PostController {
     @GetMapping("/searchPostByNameAndTitleOrAsc")
     private ResponseEntity<Object>searchPostByNameOrTitleOrAsc(
        @Valid @RequestParam(required = false,defaultValue = "",name ="name") String name,
-       @Valid @RequestParam(required = false,defaultValue = "",name = "title") String title,
-        BindingResult bindingResult
+       @Valid @RequestParam(required = false,defaultValue = "",name = "title") String title
 
     ){
 
-        return ResponseEntity.ok(postService.searchUserPostsById(name,title,bindingResult));
+        return ResponseEntity.ok(postService.searchUserPostsById(name,title));
     }
 
 
     @GetMapping("/searchUserPostsByIdSortAsc")
     private ResponseEntity<Object>getUserPostById(
-            @Valid @RequestParam(defaultValue = "") UUID post_id,
-            BindingResult bindingResult
+            @Valid @RequestParam(defaultValue = "") UUID post_id
     ){
-        return ResponseEntity.ok(postService.getUserPost(post_id,bindingResult));
+        return ResponseEntity.ok(postService.getUserPost(post_id));
     }
 
 
     @GetMapping("/getByUrlAndEditByUrl/{url}")
     private ResponseEntity<Object> searchByUrl(
-            @Valid @PathVariable String url,
-            BindingResult bindingResult
+            @Valid @PathVariable String url
     ) {
-        return new ResponseEntity<> (postService.updateAndShow(url,bindingResult), HttpStatus.OK);
+        return new ResponseEntity<> (postService.updateAndShow(url), HttpStatus.OK);
     }
 
 
